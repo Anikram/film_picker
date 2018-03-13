@@ -1,6 +1,7 @@
+#encoding: utf-8
 current_path = File.dirname(__FILE__)
 
-require "#{current_path}/film"
+require_relative "film"
 
 films = []
 i = 1
@@ -52,4 +53,4 @@ end
 the_film = good_films.sample
 
 puts "Сегодня предлагаю посмотреть:"
-puts "#{the_film.director} - \"#{the_film.title}\" (#{the_film.year})"
+puts "#{the_film.director.chomp} - \"#{the_film.title.chomp}\" (#{the_film.year.chomp})"
