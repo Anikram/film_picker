@@ -1,56 +1,19 @@
 #encoding: utf-8
 current_path = File.dirname(__FILE__)
 
-require_relative "film"
-
-films = []
-i = 1
-
-while File.exist?("#{current_path}/data/#{i}.txt")
-  data = []
-  f = File.new("#{current_path}/data/#{i}.txt", "r:UTF-8")
-  data = f.readlines
-  f.close
-  film = Film.new(data)
-  films << film
-  i += 1
-end
+require_relative "lib/film"
 
 puts "Добро пожаловать в фильмо-теку Anikram."
 puts "предлагаю выбрать фильм одного из моих любимых режиссеров:"
 puts
 
-directors = []
+Film.load_films(current_path + "/data")
 
-for film in films do
-  unless directors.include?(film.director)
-    directors << "#{film.director}"
-  end
-end
+Film.load_all_directors
 
-i = 1
+Film.show_all_directors
 
-for item in directors do
-  puts "#{i}. #{item}"
-  i += 1
-end
-
-user_input = STDIN.gets.to_i
-
-good_films = []
-
-if directors[user_input - 1]
-# поправка на элементы массива (начало с 0)
-  for film in films do
-    if film.director == directors[user_input - 1]
-      good_films << film
-    end
-  end
-else
-  abort "Такого режиссера нет в списке."
-end
-
-the_film = good_films.sample
+the_film = Film.choose_film_by_director
 
 puts "Сегодня предлагаю посмотреть:"
-puts "#{the_film.director.chomp} - \"#{the_film.title.chomp}\" (#{the_film.year.chomp})"
+puts the_film.to_s

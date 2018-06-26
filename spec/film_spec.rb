@@ -1,27 +1,25 @@
 require 'rspec'
-require_relative '../film'
+require_relative '../lib/film'
 
 describe 'Film object' do
-  before :all do
+  before :each do
+    @films_array = Film.load_films(__dir__ + "/fixtures")
+  end
 
-    @films = []
-    i = 1
-
-    File.readlines("#{__dir__}/fixtures/#{i}.txt").each do |line|
-      @films << Film.new(line)
-      i += 1
+  describe '.load_films' do
+    context 'reading films from file and' do
+      it 'returns films array.' do
+        expect(@films_array).to be_a Array
+      end
+      it 'create Film instances' do
+        expect(@films_array.first).to be_a Film
+      end
     end
   end
 
-  describe '#new' do
-    it "should return array with Film Objects" do
-      array = @films.select { |film| film.is_a?(Film)}
-      expect(array.sample).to be_a Film
-    end
-
-    it "should return Film Title" do
-      film = Film.new(["Название фильма", "Режиссер", 1923])
-      expect(film.title).to eq "Название фильма"
+  describe '#to_s' do
+    it "should print film's instance variables"  do
+      expect(@films_array.first.to_s).to eq("РЕЖИССЕР - \"ТАЙТЛ\" (ГОД)")
     end
   end
 end
